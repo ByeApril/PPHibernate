@@ -9,22 +9,17 @@ public class Util {
     private static final String URL = "jdbc:mysql://localhost:3306/mydb";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "rootroot";
-    public static Connection connection;
+    private static Connection connection;
+    private static Util instance = null;
+
     public static Connection getConnection() {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            if (connection != null) {
-                System.out.println("Соединение установлено");
-            } else {
-                System.out.println("Соединение не установлено");
-            }
         } catch (ClassNotFoundException e) {
-            System.out.println("Драйвер JDBC не найден");
             e.printStackTrace();
         } catch (SQLException e) {
-            System.out.println("Ошибка подключения");
             e.printStackTrace();
         }
         return connection;
@@ -37,5 +32,11 @@ public class Util {
                 e.printStackTrace();
             }
         }
+    }
+    public static Util getInstance() {
+        if (null == instance) {
+            instance = new Util();
+        }
+        return instance;
     }
 }
